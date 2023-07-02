@@ -1,17 +1,19 @@
+import os
 import requests
-from bs4 import BeautifulSoup
+import bs4
+import pyTelegramBotAPI
 
-
-url_list = {}
-api_key = "fMDCfdHbglU811sJLQSQMinDXCB3"
-
+API_KEY: '29996160'
+BOT_TOKEN: '6012981536:AAFrBkIIuA_e23tUwXkIzZ8Gh9FHRCm1E_E'
+CHANNEL_ID: '-1983289315'
 
 def search_movies(query):
     movies_list = []
     movies_details = {}
-    website = BeautifulSoup(requests.get(f"https://185.53.88.104/?s={query.replace(' ', '+')}").text, "html.parser")
-    movies = website.find_all("a", {'class': 'ml-mask jt'})
-    for movie in movies:
+    api_key = os.environ['API_KEY']
+    bot = pyTelegramBotAPI.Bot(token=os.environ['BOT_TOKEN'])
+    response = bot.get_messages(chat_id=os.environ['CHANNEL_ID'], query=query)
+    for movie in response:
         if movie:
             movies_details["id"] = f"link{movies.index(movie)}"
             movies_details["title"] = movie.find("span", {'class': 'mli-info'}).text
@@ -38,9 +40,3 @@ def get_movie(query):
             final_links[f"{i.text}"] = link['shortenedUrl']
         movie_details["links"] = final_links
     return movie_details
-
-
-if __name__ == "__main__":
-    movies = search_movies("The Shawshank Redemption")
-    for movie in movies:
-        print(movie)
