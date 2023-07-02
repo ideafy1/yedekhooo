@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 url_list = {}
 api_key = "fMDCfdHbglU811sJLQSQMinDXCB3"
 
@@ -31,10 +32,15 @@ def get_movie(query):
         links = movie_page_link.find_all("a", {'rel': 'noopener', 'data-wpel-link': 'internal'})
         final_links = {}
         for i in links:
-            url = f"https://api.shareus.io/direct_link?api_key=fMDCfdHbglU811sJLQSQMinDXCB3&pages=3&link=https://google.com"
+            url = f"https://api.shareus.io/v1/shorten?apiKey={api_key}&url={i['href']}"
             response = requests.get(url)
             link = response.json()
             final_links[f"{i.text}"] = link['shortenedUrl']
         movie_details["links"] = final_links
     return movie_details
 
+
+if __name__ == "__main__":
+    movies = search_movies("The Shawshank Redemption")
+    for movie in movies:
+        print(movie)
