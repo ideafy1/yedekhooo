@@ -1,9 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 url_list = {}
-api_key = "f70efd22edc5c3605c50aad8645fd68af6f132c5"
+api_key = "fMDCfdHbglU811sJLQSQMinDXCB3"
 
 
 def search_movies(query):
@@ -32,7 +31,7 @@ def get_movie(query):
         links = movie_page_link.find_all("a", {'rel': 'noopener', 'data-wpel-link': 'internal'})
         final_links = {}
         for i in links:
-            url = f"https://urlshortx.com/api?api={api_key}&url={i['href']}"
+            url = f"https://api.shareus.io/direct_link?api_key=fMDCfdHbglU811sJLQSQMinDXCB3&pages=3&link=https://google.com"
             response = requests.get(url)
             link = response.json()
             final_links[f"{i.text}"] = link['shortenedUrl']
